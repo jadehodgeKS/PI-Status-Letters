@@ -1,0 +1,74 @@
+---
+title: "Promoting Interoperability in KS: 2024"
+author: "Jade Hodge"
+format: 
+      pptx
+editor: visual
+---
+
+## History of Promoting Interoperability
+
+-   In 2009 as part of the Recovery Act provisions for the Health Information Technology and Economic Clinical Health Act (HITECH) created the Medicare and Medicaid EHR incentive programs and implemented standards for EHR certification.
+-   Promoting Interoperability (PI), a CMS incentive program first introduced in 2011, pays healthcare providers to implement and demonstrate the meaningful use of certified electronic health record technology (CEHRT).
+-   From 2011-2018 the Medicare/Medicaid EHR Incentive Programs made advancements by first creating requirements to capture electronic health data then using CEHRT requirements to standardize.
+-   In 2019 and 2020 PI programs had a complete overhaul and name change to re-align with CMS goals.
+-   In 2021 the Medicaid Promoting Interoperability program ended. Meaning no more state reimbursement for completing PI measures. Kansas healthcare finance only audits facilities to confirm PI participation and payment alignment from before Dec 31, 2021.
+
+
+## Recent History of PI
+
+-   Yearly rule changes make PI hard to follow. Here a few important requirements in recent years:
+    -   2021: Eligible Hospitals and CAH must attest to prevent downward payment adjustment from CMS.
+    -   2022: Adoption of HIE Bi-Directional exchange as an alternate way of sending data, and required reporting on Syndromic Surveillance, Immunizations, eLR, and eCR public health registries.
+    -   2023: Modifications to Active Engagement levels and scoring, and allowance of exchange under TEFCA for completing requirements.
+    -   2024: Antimicrobial Use and Resistance Surveillance is now a required measure, and increased EHR reporting period to a continuous 180 days.
+
+
+## PI Structure Overview
+
+![Eligible Hospitals and Critical Access Hospitals get points for completing PI measures and must earn a minimum of 60 points to avoid negative payment adjustment.](PI_point_map.png)
+
+
+## Promoting Interoperability in KS
+
+-   Facilities that want to send data to KDHE for PI purposes must complete a [Registration of Intent](https://www.kdhe.ks.gov/DocumentCenter/View/13359/Registration-of-Intent-to-Submit-Data-Form-PDF) (ROI) form and return it to [kdhe.meaningfuluse\@ks.gov](mailto:kdhe.meaningfuluse@ks.gov){.email}.
+-   KSSP Onboarding Analyst has the job of processing ROI and updating the facility spreadsheet that tracks Active Engagement status for certain PI measures.
+    -   PI Measures where a letter from the public health authority can be used to prove participation: Immunizations, Syndromic, eLR, eCR.
+-   PI Status letters are provided to organizations upon request.
+
+
+## Problems with PI Status Letters Leading to Solution Using R
+
+-   Hundreds of healthcare organizations in KS requesting PI status letters throughout the year prompted ideas to automate process using R.
+-   Used the same principles for a data science project as learned with R for Applied Epi training cohort.
+-   First create a Quarto document to replace the current MS Word format of PI status letter template.
+  -   Author a qmd scrip that prints one letter for one facility when rendered.
+  -   Test to make sure the qmd renders correctly for all scenarios.
+-   Status letters are changed yearly to comply with PI laws, so I created 2023 and current year versions of qmd.
+
+
+## PI Status Letter Script
+
+-   Next step is using qmd created for a single facility to render letters for entire organization
+-   Create an outside script to filter by organization or facility.
+-   This process relies on the purrr package `map()` family, specifically `map2()` and `pmap()` functions.
+  -   Use `map2()` to create a column of executable parameters.
+  -   Use `pmap()` and output from `map2()` to apply the quarto `render()` function to multiple facilities at once.
+
+## Future Possibilities for Improvement
+
+-   Goals to improve efficiency by having everything in one script.
+-   Planning to attend posit::conf(2024) and chose a workshop all about Quarto, hopefully this will give me ideas for improvement.
+-   Learning more about Shiny and app creation could help with improvement.
+
+
+## Resources
+
+-   <https://www.kdhe.ks.gov/1391/Kansas-Promoting-Interoperability>
+-   <https://www.cms.gov/medicare/regulations-guidance/promoting-interoperability-programs>
+-   <https://www.cms.gov/files/document/2024-pi-program-overview-presentation.pdf>
+-   <https://www.youtube.com/watch?v=MKjz_xkMgxY>
+-   <https://purrr.tidyverse.org/reference/map2.html>
+-   <https://www.tidyverse.org/blog/2023/05/purrr-walk-this-way/>
+
+## Questions and Contact Info

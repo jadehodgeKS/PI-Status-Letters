@@ -1,0 +1,23 @@
+---
+title: "PI Status Update Letter Automation"
+format: gfm
+editor: visual
+---
+
+# Background
+
+Promoting Interoperability (PI) is the law that allows CMS to pay healthcare facilities for sending "production" data to required public health registries (eLR, eCR, Immunizations, Syndromic Surveillance). Promoting Interoperability laws began in 2011, but KDHE ended the state PI program, including funding, in 2021 and now only performs a few duties related to PI. KDHE's Division of Healthcare Finance audits facilities' PI claims, and the Division of Public Health continues to provide PI status letters for facilities upon request. In 2022 there was a major program overhaul requiring facilities to send data to public health registries where possible, and a name change from "Meaningful Use" to PI.
+
+# Purpose
+
+The purpose of this project is to automate printing of PI status letters by facility organization or for a single facility.
+
+# How to Begin
+
+1.  Navigate to the "scripts" file and open "PI_status_instructions.R".
+
+2.  Save updated copy of "PI_Status.xlsx" to "data" folder. Note, do not change the name "PI_Status" and be sure to close the spreadsheet before trying to run anything.
+
+3.  Follow the instructions in "PI_status_instructions.R". Pay special attention to step five (changing the organization/facility name) and six (specifying the .qmd to render).
+
+4.  After running all steps in "PI_status_instructions.R", the final status letter will populate as PDF in the "pdf_output" file. Add appropriate PDF to communications with the facility.

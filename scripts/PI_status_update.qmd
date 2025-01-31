@@ -1,0 +1,93 @@
+---
+format:
+  pdf:
+    include-after-body: 
+      text: \pagenumbering{gobble}
+editor: visual
+params:
+  organization_name: "HCA Healthcare"
+  facility_name: "Menorah Medical Center"
+---
+
+```{r eval=TRUE, echo=FALSE, output=FALSE}
+# Load Packages
+pacman::p_load(
+  rio,          # for importing data
+  here,         # for file paths
+  janitor,      # for data cleaning
+  lubridate,    # for working with dates
+  tidyverse,    # for data management
+  purrr,        # for  
+  dplyr,        # just in case
+  readxl,       # to read excel
+  rmarkdown,
+  quarto
+)
+
+```
+
+```{r eval=TRUE, echo=FALSE, output=FALSE}
+# Import data
+PI_status_raw <- read_excel(here("data", "PI_Status.xlsx"), 
+           col_names = TRUE,
+           na = "NA") %>% 
+  clean_names()
+```
+
+```{r eval=TRUE, echo=FALSE, output=FALSE}
+# Clean data, recode AE levels
+PI_status <- PI_status_raw %>% 
+  select('organization_name', 'facility_name', 'iz', 'elr', 'ss', 'ecr') %>% 
+  mutate_at(c("iz", "elr", "ss", "ecr"), 
+            funs(recode(.,
+                           "AE1" = "Active Engagement 1 – Pre-production and Validation",
+                           "AE2" = "Active Engagement 2 – Validated Data Production"
+                           )))
+```
+
+```{r eval=TRUE, echo=FALSE, output=FALSE}
+# Call appropriate cell for each registry
+imm <- PI_status %>% 
+  filter(facility_name == params$facility_name) %>% 
+  select(iz) %>% 
+  as.character()
+
+elr <- PI_status %>% 
+  filter(facility_name == params$facility_name) %>% 
+  select(elr) %>% 
+  as.character()
+
+ss <- PI_status %>% 
+  filter(facility_name == params$facility_name) %>% 
+  select(ss) %>% 
+  as.character()
+
+ecr <- PI_status %>% 
+  filter(facility_name == params$facility_name) %>% 
+  select(ecr) %>% 
+  as.character()
+
+```
+
+![](kdhe_letterhead.png)
+
+# **`r params$facility_name`**
+
+This organization has registered intent with KDHE to submit data in the Promoting Interoperability program (formerly Meaningful Use). The provider's status in select public health registries as of **`r format(Sys.Date(), "%B %d, %Y")`** is:
+
+\
+Immunization Reporting (WebIZ): `r imm`\
+Electronic Lab Reporting: `r elr`\
+Syndromic Surveillance: `r ss`\
+Electronic Case Reporting: `r ecr`\
+
+*This is official notification of Promoting Interoperability status. Please keep this document on file for attestation purposes.*
+
+\
+Jade Hodge -- Promoting Interoperability\
+Bureau of Epidemiology and Public Health Informatics\
+Kansas Department of Health and Environment\
+1000 S Jackson Street, STE 130\
+Topeka, KS 66612\
+kdhe.meaningfuluse\@ks.gov\
+<https://www.kdhe.ks.gov/1391/Kansas-Promoting-Interoperability>
